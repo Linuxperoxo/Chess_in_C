@@ -16,6 +16,10 @@
 
 //==========================================================| "CLASS" FUNCTIONS
 
+/**
+ * Construtor da "classe"
+ */
+
 struct Pawn* create_Pawn(const unsigned int color, const unsigned int row, const unsigned int col){
   
   /**
@@ -44,6 +48,10 @@ struct Pawn* create_Pawn(const unsigned int color, const unsigned int row, const
 
   return new_Pawn;
 }
+
+/**
+ * Destrutor da "classe"
+ */
 
 int destroyer_Pawn(struct Pawn *pawn_ptr){
   
