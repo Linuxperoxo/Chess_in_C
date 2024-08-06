@@ -14,20 +14,25 @@ struct Pawn{
   unsigned int color;
   unsigned int row;
   unsigned int col;
-
-
-  struct Pawn* (*constructor)(const unsigned int color, const unsigned int row, const unsigned int col);
 };
 
 /**
- * Construtor da "classe" xD 
-*/
+ * Construtor da "classe"
+ * Aloca e inicializa uma nova instância de Pawn.
+ * @param color A cor do peão.
+ * @param row A linha onde o peão está.
+ * @param col A coluna onde o peão está.
+ * @return Um ponteiro para a nova instância de Pawn.
+ */
 
 struct Pawn* create_Pawn(const unsigned int color, const unsigned int row, const unsigned col);
 
 /**
  * Destrutor da "classe"
-*/
+ * Libera a memória alocada para a instância de Pawn.
+ * @param pawn_ptr Ponteiro para a instância de Pawn a ser destruída.
+ * @return 0 se a destruição for bem-sucedida, -1 em caso de erro.
+ */
 
 int destroyer_Pawn(struct Pawn* pawn_ptr);
 
