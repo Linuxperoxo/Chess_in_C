@@ -1,24 +1,21 @@
-//==========================================|
-//   FILE: main.c                           |
-//   AUTHOR: Linuxperoxo                    |
-//   COPYRIGHT: (c) 2024 per Linuxperoxo.   |
-//==========================================/
-
-//==========================================================| LIBS
-
 #include <stdio.h>
 
-//==========================================================| .H
-
 #include "pawn.h"
+#include "board.h"
 
-//==========================================================| MAIN
-
-int main(){
-  struct Pawn* pawn1 = create_Pawn(1, 0, 0);
-  struct Pawn* pawn2 = create_Pawn(0, 10, 11);
+int main(int argc, char* argv[]){
+  Pawn* pawn1 = new_Pawn(0, 23, 123);
+  printf("%c %d %d %d %d %d \n", pawn1->type, pawn1->color, pawn1->row, pawn1->col, pawn1->old_row, pawn1->old_col);
+//  pawn1->destroyer(pawn1);
+//  printf("%c %d %d %d %d %d \n", pawn1->type, pawn1->color, pawn1->row, pawn1->col, pawn1->old_row, pawn1->old_col);
   
-  printf("%c %d %d %d\n", pawn1->type, pawn1->color, pawn1->row, pawn1->col);
-  printf("%c %d %d %d\n", pawn2->type, pawn2->color, pawn2->row, pawn2->col);
+  Board* board = new_Board();
+
+  print_Board(board);
+
+  delete_Board(board);
+
+  print_Board(board);
+  
   return 0;
 }
