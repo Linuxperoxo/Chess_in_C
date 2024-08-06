@@ -31,7 +31,7 @@ struct Pawn* create_Pawn(const unsigned int color, const unsigned int row, const
  * Destrutor da "classe"
  * Libera a memória alocada para a instância de Pawn.
  * @param pawn_ptr Ponteiro para a instância de Pawn a ser destruída.
- * @return 0 se a destruição for bem-sucedida, -1 em caso de erro.
+ * @return 1 se a destruição for bem-sucedida, 0 em caso de erro.
  */
 
 int destroyer_Pawn(struct Pawn* pawn_ptr);
