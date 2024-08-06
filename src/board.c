@@ -35,9 +35,18 @@ Board* new_Board(){
       exit(EXIT_FAILURE);
     }
   }
+  newBoard->put = put_Piece;
   newBoard->print = print_Board;
   newBoard->destroyer = delete_Board;
+  
   return newBoard;
+}
+
+void put_Piece(Board* board, Piece* piece){
+  if(board->board[piece->old_row][piece->old_col] != NULL){
+    board->board[piece->old_row][piece->old_col] = NULL;
+  }
+  board->board[piece->row][piece->col] = piece;
 }
 
 void print_Board(Board* board){
@@ -51,9 +60,9 @@ void print_Board(Board* board){
     printf("%d", row + 1);
     for(int col = 0; col < MAX_BOARD; col++){
       if(board->board[row][col] == NULL){
-        printf(" | %c", 'A');
+        printf(" |  ");
       } else {
-        printf("  | %c", board->board[row][col]->type);
+        printf(" | %c", board->board[row][col]->type);
       }
     }
     printf(" |\n");
