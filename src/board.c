@@ -41,6 +41,11 @@ Board* new_Board(){
 }
 
 void print_Board(Board* board){
+  if(board == NULL || board->board == NULL){
+    fprintf(stderr, "Error: Unable to access unallocated memory\n");
+    exit(EXIT_FAILURE);
+  }
+
   for(int row = 0; row < MAX_BOARD; row++){
     printf("  +---+---+---+---+---+---+---+---+\n");
     printf("%d", row + 1);
@@ -59,6 +64,19 @@ void print_Board(Board* board){
 
 void delete_Board(Board *board){
   if(board){
+    if(board->board){
+      for(int row = 0; row < MAX_BOARD; row++){
+        if(board->board[row]){
+          for(int col = 0; col < MAX_BOARD; col++){
+            if(board->board[row][col]){
+              board->board[row][col]->destroyer(board->board[row][col]);
+            }
+          } 
+          free(board->board[row]);
+        }
+      }
+      free(board->board);
+    }
     free(board);
   }
 }

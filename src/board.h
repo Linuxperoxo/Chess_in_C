@@ -14,6 +14,8 @@ typedef struct Board{
 
 Board* new_Board();
 
+void put_Piece(Piece* piece);
+
 void print_Board(Board* board);
 
 void delete_Board(Board* board);
