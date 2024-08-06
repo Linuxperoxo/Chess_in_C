@@ -37,7 +37,7 @@ struct Pawn* create_Pawn(const unsigned int color, const unsigned int row, const
    * Verificando se o malloc não teve nenhum problema
    */
 
-  if(new_Pawn != NULL){
+  if(new_Pawn == NULL){
     fprintf(stderr, "Error: Memory allocation failed for Pawn struct\n");
     exit(EXIT_FAILURE);
   }
