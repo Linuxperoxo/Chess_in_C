@@ -2,26 +2,26 @@
 #include <stdlib.h>
 
 #include "pawn.h"
+#include "piece.h"
 
-Pawn* new_Pawn(unsigned int color, unsigned int row, unsigned int col){
-  Pawn* pawn = (Pawn*)malloc(sizeof(Pawn));
-
-  if(pawn == NULL){
-    fprintf(stderr, "%s\n", "Error: Memory allocation failed for Pawn struct");
+Pawn* new_Pawn(const unsigned int color, const unsigned int row, const unsigned int col){
+  Pawn* newPawn = (Pawn*)malloc(sizeof(Pawn));
+  
+  if(newPawn == NULL){
+    fprintf(stderr, "Error: Memory allocation failed for Pawn struct\n");
     exit(EXIT_FAILURE);
   }
 
-  pawn->type = (color == 0 ? 'P' : 'p');
-  pawn->row = row;
-  pawn->col = col;
-  pawn->old_row = row;
-  pawn->old_col = col;
+  newPawn->base = new_Piece(color, 'p', row, col);
 
-  return pawn;
+  newPawn->destroyer = delete_Pawn;
+
+  return newPawn;
 }
 
-void delete_Pawn(Pawn* pawn){
+void delete_Pawn(Pawn *pawn){
   if(pawn){
+    pawn->base->destroyer(pawn->base);
     free(pawn);
   }
 }
