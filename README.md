@@ -1,1 +1,1 @@
-# constructor_in_c
+# GenChess
