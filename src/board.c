@@ -1,68 +1,65 @@
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
 
 #include "board.h"
-#include "piece.h"
 
 Board* new_Board(){
-  Board* newBoard = (Board*)malloc(sizeof(Board));
+  Board* newBoard = (Board*) malloc(sizeof(Board));
 
   if(newBoard == NULL){
-    fprintf(stderr, "Error: Memory allocation failed for Board struct\n");
+    fprintf(stderr, "Error: Memory allocation failed for Board struct!\n");
     exit(EXIT_FAILURE);
   }
 
-  newBoard->board = (Piece***)malloc(sizeof(Piece**) * MAX_BOARD);
+  newBoard->board = (Piece***) malloc(sizeof(Piece**) * MAX_BOARD_SIZE);
 
   if(newBoard->board == NULL){
-    fprintf(stderr, "Error: Memory allocation failed for Board rows\n");
+    fprintf(stderr, "Error: Memory allocation failed for Board->board!\n");
     free(newBoard);
     exit(EXIT_FAILURE);
   }
 
-  for(int row = 0; row < MAX_BOARD; row++){
-    newBoard->board[row] = (Piece**)malloc(sizeof(Piece*) * MAX_BOARD);
+  for(uint8_t row = 0; row < MAX_BOARD_SIZE; row++){
+    newBoard->board[row] = (Piece**) malloc(sizeof(Piece*) * MAX_BOARD_SIZE);
     
     if(newBoard->board[row] == NULL){
-      fprintf(stderr, "Error: Memory allocation failed for Board row %d\n", row);
+      fprintf(stderr, "Error: Memory allocation failed for Board->board[%d]!\n", row);
       
-      for(int i = 0; i < row; i++){
-        free(newBoard->board[row]);
+      for(uint8_t deleting_row = 0; deleting_row < row; deleting_row++){
+        free(newBoard->board[deleting_row]);
       }
+
       free(newBoard->board);
       free(newBoard);
+
       exit(EXIT_FAILURE);
     }
   }
-  newBoard->put = put_Piece;
-  newBoard->print = print_Board;
-  newBoard->destroyer = delete_Board;
-  
+
+  newBoard->clear = clear_Board;
+  newBoard->clear(newBoard);
+  newBoard->put_piece = put_piece;
+  newBoard->print = print;
+  newBoard->struct_destroyer = delete_Board;
+
   return newBoard;
 }
 
-void put_Piece(Board* board, Piece* piece){
-  if(board->board[piece->old_row][piece->old_col] != NULL){
-    board->board[piece->old_row][piece->old_col] = NULL;
-  }
+void put_piece(Board* board, Piece* piece){
+  board->board[piece->old_row][piece->old_col] = NULL;
   board->board[piece->row][piece->col] = piece;
 }
 
-void print_Board(Board* board){
-  if(board == NULL || board->board == NULL){
-    fprintf(stderr, "Error: Unable to access unallocated memory\n");
-    exit(EXIT_FAILURE);
-  }
-
-  for(int row = 0; row < MAX_BOARD; row++){
+void print(Board* board){
+  for(uint8_t row = MAX_BOARD_SIZE; row >= MIN_BOARD_SIZE; row--){
     printf("  +---+---+---+---+---+---+---+---+\n");
-    printf("%d", row + 1);
-    for(int col = 0; col < MAX_BOARD; col++){
-      if(board->board[row][col] == NULL){
-        printf(" |  ");
+    printf("%d", row);
+    for(uint8_t col = 0; col < MAX_BOARD_SIZE; col++){
+      if(board->board[row - 1][col] != NULL){
+         printf(" | %c", board->board[row - 1][col]->type);
       } else {
-        printf(" | %c", board->board[row][col]->type);
+        printf(" |  ");
       }
     }
     printf(" |\n");
@@ -71,21 +68,29 @@ void print_Board(Board* board){
   printf("    1   2   3   4   5   6   7   8\n");
 }
 
-void delete_Board(Board *board){
-  if(board){
-    if(board->board){
-      for(int row = 0; row < MAX_BOARD; row++){
-        if(board->board[row]){
-          for(int col = 0; col < MAX_BOARD; col++){
-            if(board->board[row][col]){
-              board->board[row][col]->destroyer(board->board[row][col]);
-            }
-          } 
-          free(board->board[row]);
+void clear_Board(Board* board){
+  if(board->board){
+    for(uint8_t row = 0; row < MAX_BOARD_SIZE; row++){
+      for(uint8_t col = 0; col < MAX_BOARD_SIZE; col++){
+        if(board->board[row][col] != NULL){
+          board->board[row][col] = NULL;
         }
       }
-      free(board->board);
     }
-    free(board);
+  }
+}
+
+void delete_Board(Board** board){
+  if(board){
+    if((*board)->board){
+      (*board)->clear((*board));
+      for(uint8_t row = 0; row < MAX_BOARD_SIZE; row++){
+        free((*board)->board[row]);
+      }
+      free((*board)->board);
+      (*board)->board = NULL;
+    }
+    free((*board));
+    *board = NULL;
   }
 }

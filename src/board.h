@@ -1,25 +1,32 @@
 #ifndef BOARD_H
 #define BOARD_H
 
-#define MAX_BOARD 8
-#define MIN_BOARD 1
-
 #include "piece.h"
+
+#define MAX_BOARD_SIZE 8
+#define MIN_BOARD_SIZE 1
 
 typedef struct Board{
   Piece*** board;
 
-  void (*put)(struct Board* board, struct Piece* piece);
-  void (*print)(struct Board* board);
-  void (*destroyer)(struct Board* board);
+  void(*put_piece)(struct Board*, struct Piece*);
+
+  void(*clear)(struct Board*);
+
+  void(*print)(struct Board*);
+
+  void(*struct_destroyer)(struct Board**);
+
 }Board;
 
 Board* new_Board();
 
-void put_Piece(Board* board, Piece* piece);
+void put_piece(Board* board, Piece* piece);
 
-void print_Board(Board* board);
+void print(Board* board);
 
-void delete_Board(Board* board);
+void clear_Board(Board* board);
+
+void delete_Board(Board** board);
 
 #endif

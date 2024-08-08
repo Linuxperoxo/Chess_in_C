@@ -1,19 +1,23 @@
 #ifndef PIECE_H
 #define PIECE_H
 
+#include <stdint.h>
+
 typedef struct Piece{
   char type;
-  unsigned int color;
-  unsigned int row;
-  unsigned int col;
-  unsigned int old_row;
-  unsigned int old_col;
 
-  void (*destroyer)(struct Piece* piece);
+  uint8_t color;
+  uint8_t row;
+  uint8_t col;
+  uint8_t old_row;
+  uint8_t old_col;
+
+  void(*struct_destroyer)(struct Piece**);
+
 }Piece;
 
-Piece* new_Piece(const unsigned int color, const char type, const unsigned int row, const unsigned int col);
+Piece* new_Piece(const char type, const uint8_t color, const uint8_t row, const uint8_t col);
 
-void delete_Piece(Piece* piece);
+void delete_Piece(Piece** piece);
 
 #endif
